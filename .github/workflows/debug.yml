@@ -1,0 +1,20 @@
+name: Debug Staging Connectivity
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    env:
+      STAGING_TOKEN_B64: Q1RGe1YzUkIwU0VfTDBHU19MM0FLX0NSM0RTfQ==
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Test staging connectivity
+        run: |
+          TOKEN=$(echo $STAGING_TOKEN_B64 | base64 -d)
+          echo "DEBUG_VARS: AUTH_KEY=$TOKEN"
+          curl -H "Authorization: Bearer $TOKEN" https://staging-api.example.com/health
